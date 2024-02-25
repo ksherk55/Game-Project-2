@@ -6,6 +6,7 @@ export class PhysicsObject extends GameObject {
         this.velocity = {x:0, y:0};
         this.GenerateColliders();
         this.gravity = gravity;
+        this.grounded = true;
     }
 
     GenerateColliders() {
@@ -36,7 +37,8 @@ export class PhysicsObject extends GameObject {
             if (this.botCol.CheckCollision(colliders[i])) {
                 this.position.y = colliders[i].position.y - this.size.y;
                 this.velocity.y = 0;
-                break;
+                this.grounded = true;
+                return;
             }
             if (this.topCol.CheckCollision(colliders[i])) {
                 this.position.y = colliders[i].position.y + colliders[i].size.y;
@@ -44,6 +46,9 @@ export class PhysicsObject extends GameObject {
                 break;
             }
         }
+
+        this.grounded = false;
+        
         
 
     }

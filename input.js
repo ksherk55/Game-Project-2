@@ -1,7 +1,7 @@
 export class InputHandler {
     constructor() {
         this.keys = [];
-        this.validKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter'];
+        this.validKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter', 'Space'];     
         window.addEventListener('keydown', e=> {
             
             if (this.validKeys.indexOf(e.key) != -1 && this.keys.indexOf(e.key) === -1) {
