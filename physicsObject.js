@@ -1,7 +1,13 @@
 import { GameObject } from "./gameObject.js";
-
+/**
+ * 
+ * Physics object class
+ * represents objects to move based on a velocity
+ * Contains a variable for postion (default {x: 0, y: 0}), size (default {x: 0, y: 0}),
+ * color (default "Black"), and gravity (default 1, positive for downward gravity)
+ */
 export class PhysicsObject extends GameObject {
-    constructor(position, size, color, gravity) {
+    constructor(position = {x:0, y:0}, size = {x:0, y:0}, color = "Black", gravity = 1) {
         super(position, size, color);
         this.velocity = {x:0, y:0};
         this.GenerateColliders();

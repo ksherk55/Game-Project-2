@@ -9,6 +9,13 @@ window.addEventListener('load', function(){
     canvas.width = 500;
     canvas.height = 500;
 
+    /**
+     * Class that manages the game.
+     * Width and height coorespond to the width and height of the game window
+     * gameObjects contains all objects to be rendered
+     * physicsObjects contains all objects to be updated
+     * collisionObjects contains all objects that physics objects can collide with
+     */
     class Game {
         constructor(width, height) {
             this.width = width;
@@ -38,7 +45,6 @@ window.addEventListener('load', function(){
     game.physicsObjects.push(g1);
     game.gameObjects.push(g2);
     game.collisionObjects.push(g2);
-    console.log(game.collisionObjects[0]);
     let input = new InputHandler();
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
