@@ -8,27 +8,31 @@ export class Player extends PhysicsObject {
     }
 
     Update(colliders, input) {
-        this.HandleCollisions(colliders);
-        this.Move(input);
-        this.RepositionColliders();
+        this.Move(input, colliders);
 
     }  
 
-    Move(input) {
-        if (input.includes("ArrowUp") && this.grounded) {
+    Move(input, colliders) {
+        if (input.includes(" ") && this.grounded) {
             
         this.velocity.y += this.jumpForce;
         this.grounded = false;
         } else {
             this.velocity.y += this.gravity;
         }
-        if (input.includes("ArrowLeft")) this.velocity.x = -this.movespeed;
-        else if (input.includes("ArrowRight")) this.velocity.x = this.movespeed;
+        if (input.includes("a")) this.velocity.x = -this.movespeed;
+        else if (input.includes("d")) this.velocity.x = this.movespeed;
         else this.velocity.x = 0;
 
         
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
+        
+        this.position.x = Math.min(this.position.x, 1500 - this.size.x);
+        this.position.x = Math.max(this.position.x, 0);
+        this.RepositionColliders();
+        
+        this.HandleCollisions(colliders);
     }
 
     

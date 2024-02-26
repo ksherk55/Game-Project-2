@@ -21,16 +21,22 @@ export class PhysicsObject extends GameObject {
     }
 
     Update(colliders) {
-        this.HandleCollisions(colliders);
+        
         this.Move();
-        this.RepositionColliders();
+        
 
     }
 
     Move() {
         this.velocity.y += this.gravity;
+        let oldX = this.position.x;
+        let oldY = this.position.y;
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
+        this.position.x = Math.min([this.position.x, 1500 + this.size.x]);
+        this.position.x = Math.max([this.position.x, 0]);
+        this.RepositionColliders();
+        this.HandleCollisions(colliders);
     }
 
     RepositionColliders() {
