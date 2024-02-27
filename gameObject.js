@@ -27,4 +27,8 @@ export class GameObject {
         ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
     }
 
+    OnCollision(other, colType) {
+
+    }
+
 }

@@ -1,10 +1,11 @@
 import { PhysicsObject } from "./physicsObject.js";
 
 export class Player extends PhysicsObject {
-    constructor(position, size, color, gravity) {
+    constructor(position, size, color, gravity, spawn = { x:0, y:0}) {
         super(position, size, color, gravity);
         this.jumpForce = -20;
         this.movespeed = 10;
+        this.spawn = spawn;
     }
 
     Update(colliders, input) {
@@ -33,6 +34,10 @@ export class Player extends PhysicsObject {
         this.RepositionColliders();
         
         this.HandleCollisions(colliders);
+    }
+
+    Respawn() {
+        this.position = this.spawn;
     }
 
     

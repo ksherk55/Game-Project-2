@@ -2,6 +2,8 @@ import { InputHandler } from './input.js';
 import { GameObject } from "./gameObject.js";
 import { PhysicsObject } from "./physicsObject.js";
 import { Player } from './player.js';
+import { DeathZone } from './deathZone.js';
+import { Platform } from './platform.js';
 
 window.addEventListener('load', function(){
     const canvas = this.document.getElementById('canvas1');
@@ -36,14 +38,18 @@ window.addEventListener('load', function(){
             }
         }
         addPlatform(pos, size, color) {
-            let g = new GameObject(pos, size, color);
+            let g = new Platform(pos, size, color);
             this.gameObjects.push(g);
             this.collisionObjects.push(g);
         }
         addPlayer(pos, size, color) {
-            let g1 = new Player(pos, size, color, 1);
+            let g1 = new Player(pos, size, color, 1, {x:300, y:0});
             game.gameObjects.push(g1);
             game.physicsObjects.push(g1);
+        }
+        addDeathZone(pos, size) {
+            let g1 = new DeathZone(pos, size);
+            this.collisionObjects.push(g1);
         }
     }
 
@@ -61,6 +67,8 @@ window.addEventListener('load', function(){
     game.addPlatform({x:725, y: 150}, {x: 50, y: 50}, "Black");
     game.addPlatform({x:200, y: 150}, {x: 300, y: 50}, "Black");
     game.addPlayer({ x: 0, y: 0 }, { x: 50, y: 50 }, "Red");
+    game.addDeathZone({x:0, y: 600}, {x: 300, y: 50})
+    console.log(typeof g1);
     let input = new InputHandler();
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);

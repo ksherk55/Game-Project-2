@@ -37,6 +37,7 @@ export class PhysicsObject extends GameObject {
         this.position.x = Math.max([this.position.x, 0]);
         this.RepositionColliders();
         this.HandleCollisions(colliders);
+        this.RepositionColliders();
     }
 
     RepositionColliders() {
@@ -45,21 +46,26 @@ export class PhysicsObject extends GameObject {
     }
 
     HandleCollisions(colliders) {
+        var gflag = false;
         for (let i = 0; i < colliders.length; i++) {
             if (this.botCol.CheckCollision(colliders[i])) {
-                this.position.y = colliders[i].position.y - this.size.y;
-                this.velocity.y = 0;
-                this.grounded = true;
-                return;
+                let state = colliders[i].OnCollision(this, "B");
+                if ( state == "grounded") {
+                    gflag = true;
+                } else if (state == "DEAD") {
+                    return;
+                }
+                
+                
             }
             if (this.topCol.CheckCollision(colliders[i])) {
-                this.position.y = colliders[i].position.y + colliders[i].size.y;
-                this.velocity.y = 0;
-                break;
+                if (colliders[i].OnCollision(this, "T") == "DEAD") {
+                    return;
+                }
             }
         }
 
-        this.grounded = false;
+        this.grounded = gflag;
         
         
 
