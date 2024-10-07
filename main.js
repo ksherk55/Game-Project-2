@@ -27,9 +27,9 @@ window.addEventListener('load', function(){
             this.collisionObjects = [];
         }
 
-        update(input) {
+        update(input, deltaTime) {
             for (let i = 0; i < this.physicsObjects.length; i++) {
-                this.physicsObjects[i].Update(this.collisionObjects, input);
+                this.physicsObjects[i].Update(this.collisionObjects, input, deltaTime);
             }
         }
         draw(ctx) {
@@ -43,7 +43,7 @@ window.addEventListener('load', function(){
             this.collisionObjects.push(g);
         }
         addPlayer(pos, size, color) {
-            let g1 = new Player(pos, size, color, 1, {x:300, y:0});
+            let g1 = new Player(pos, size, color, 7000, {x:pos.x, y:pos.y});
             game.gameObjects.push(g1);
             game.physicsObjects.push(g1);
         }
@@ -54,8 +54,7 @@ window.addEventListener('load', function(){
     }
 
     const game = new Game(canvas.width, canvas.height);
-    let g1 = new Player({ x: 0, y: 0 }, { x: 50, y: 50 }, "Red", 1);
-    game.addPlatform({x:-25000, y: 750}, {x: 50000, y: 500}, "Black");
+    game.addPlatform({x:0, y: 750}, {x: 240, y: 500}, "Black");
     game.addPlatform({x:200, y: 600}, {x: 300, y: 50}, "Black");
     game.addPlatform({x:600, y: 450}, {x: 50, y: 50}, "Black");
     game.addPlatform({x:850, y: 450}, {x: 50, y: 50}, "Black");
@@ -66,13 +65,16 @@ window.addEventListener('load', function(){
     game.addPlatform({x:975, y: 150}, {x: 50, y: 50}, "Black");
     game.addPlatform({x:725, y: 150}, {x: 50, y: 50}, "Black");
     game.addPlatform({x:200, y: 150}, {x: 300, y: 50}, "Black");
-    game.addPlayer({ x: 0, y: 0 }, { x: 50, y: 50 }, "Red");
-    game.addDeathZone({x:0, y: 600}, {x: 300, y: 50})
-    console.log(typeof g1);
+    game.addPlayer({ x: 100, y: 650 }, { x: 50, y: 50 }, "Red");
+    game.addDeathZone({x:0, y: canvas.height}, {x: canvas.width, y: 50})
     let input = new InputHandler();
+
+    let time = performance.now();
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.update(input.keys);
+        let deltaTime = (performance.now() - time) / 1000;
+        time = performance.now();
+        game.update(input.keys, deltaTime);
         game.draw(ctx);
         requestAnimationFrame(animate);
     }

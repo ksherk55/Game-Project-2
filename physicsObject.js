@@ -7,7 +7,7 @@ import { GameObject } from "./gameObject.js";
  * color (default "Black"), and gravity (default 1, positive for downward gravity)
  */
 export class PhysicsObject extends GameObject {
-    constructor(position = {x:0, y:0}, size = {x:0, y:0}, color = "Black", gravity = 1) {
+    constructor(position = {x:0, y:0}, size = {x:0, y:0}, color = "Black", gravity = 1000) {
         super(position, size, color);
         this.velocity = {x:0, y:0};
         this.GenerateColliders();
@@ -20,19 +20,18 @@ export class PhysicsObject extends GameObject {
         this.botCol = new GameObject({x:this.position.x, y:this.position.y + this.size.y * .8}, {x:this.size.x, y: .2 * this.size.y});
     }
 
-    Update(colliders) {
+    Update(colliders, deltaTime) {
         
-        this.Move();
+        this.Move(deltaTime);
         
 
     }
 
-    Move() {
-        this.velocity.y += this.gravity;
+    Move(deltaTime) {
         let oldX = this.position.x;
         let oldY = this.position.y;
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
+        this.position.x += this.velocity.x * deltaTime;
+        this.position.y += this.velocity.y * this.gravity * deltaTime;
         this.position.x = Math.min([this.position.x, 1500 + this.size.x]);
         this.position.x = Math.max([this.position.x, 0]);
         this.RepositionColliders();
@@ -52,7 +51,8 @@ export class PhysicsObject extends GameObject {
                 let state = colliders[i].OnCollision(this, "B");
                 if ( state == "grounded") {
                     gflag = true;
-                } else if (state == "DEAD") {
+                }
+                if (state == "DEAD") {
                     return;
                 }
                 
