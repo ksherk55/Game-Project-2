@@ -1,34 +1,44 @@
 import { PhysicsObject } from "./physicsObject.js";
 
 export class Player extends PhysicsObject {
-    constructor(position, size, color, gravity) {
+    constructor(position, size, color, gravity, spawn = { x:0, y:0}) {
         super(position, size, color, gravity);
-        this.jumpForce = -20;
-        this.movespeed = 10;
+        this.jumpForce = -260000;
+        this.movespeed = 550;
+        this.spawn = spawn;
     }
 
-    Update(colliders, input) {
-        this.HandleCollisions(colliders);
-        this.Move(input);
-        this.RepositionColliders();
+    Update(colliders, input, deltaTime) {
+        this.Move(input, colliders, deltaTime);
 
     }  
 
-    Move(input) {
-        if (input.includes("ArrowUp") && this.grounded) {
+    Move(input, colliders, deltaTime) {
+        if (input.includes(" ") && this.grounded) {
             
-        this.velocity.y += this.jumpForce;
+        this.velocity.y += this.jumpForce * deltaTime;
         this.grounded = false;
         } else {
-            this.velocity.y += this.gravity;
+            this.velocity.y += this.gravity * deltaTime;
         }
-        if (input.includes("ArrowLeft")) this.velocity.x = -this.movespeed;
-        else if (input.includes("ArrowRight")) this.velocity.x = this.movespeed;
+        if (input.includes("a")) this.velocity.x = -this.movespeed;
+        else if (input.includes("d")) this.velocity.x = this.movespeed;
         else this.velocity.x = 0;
 
         
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
+        this.position.x += this.velocity.x * deltaTime;
+        this.position.y += this.velocity.y * deltaTime;
+        
+        this.position.x = Math.min(this.position.x, 1500 - this.size.x);
+        this.position.x = Math.max(this.position.x, 0);
+        this.RepositionColliders();
+        
+        this.HandleCollisions(colliders);
+    }
+
+    Respawn() {
+        this.position.x = this.spawn.x;
+        this.position.y = this.spawn.y;
     }
 
     
