@@ -3,7 +3,7 @@ import { PhysicsObject } from "./physicsObject.js";
 export class Player extends PhysicsObject {
     constructor(position, size, color, gravity, spawn = { x:0, y:0}) {
         super(position, size, color, gravity);
-        this.jumpForce = -260000;
+        this.jumpForce = -1600;
         this.movespeed = 550;
         this.spawn = spawn;
     }
@@ -16,7 +16,7 @@ export class Player extends PhysicsObject {
     Move(input, colliders, deltaTime) {
         if (input.includes(" ") && this.grounded) {
             
-        this.velocity.y += this.jumpForce * deltaTime;
+        this.velocity.y += this.jumpForce;
         this.grounded = false;
         } else {
             this.velocity.y += this.gravity * deltaTime;
